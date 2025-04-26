@@ -110,6 +110,7 @@ capabilities:macro,Macro
 capabilities:macros,Macros
 capabilities:manager,Instances
 capabilities:ph,pH
+capabilities:autotester,Auto Tester
 capabilities:phprobes,Probes (pH)
 capabilities:system,System
 capabilities:temperature,Temperatures

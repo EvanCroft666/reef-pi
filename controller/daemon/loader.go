@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/reef-pi/reef-pi/controller/modules/ato"
+	"github.com/reef-pi/reef-pi/controller/modules/autotester"
 	"github.com/reef-pi/reef-pi/controller/modules/camera"
 	"github.com/reef-pi/reef-pi/controller/modules/doser"
 	"github.com/reef-pi/reef-pi/controller/modules/equipment"
@@ -24,6 +25,15 @@ func (r *ReefPi) loadPhSubsystem() error {
 	}
 	p := ph.New(r.settings.Capabilities.DevMode, r)
 	r.subsystems.Load(ph.Bucket, p)
+	return nil
+}
+
+func (r *ReefPi) loadAutoTesterSubsystem() error {
+	at, err := autotester.New(r.settings.Capabilities.DevMode, r)
+	if err != nil {
+		return err
+	}
+	r.subsystems.Load(autotester.Bucket, at)
 	return nil
 }
 
@@ -173,6 +183,10 @@ func (r *ReefPi) loadSubsystems() error {
 	if err := r.loadPhSubsystem(); err != nil {
 		log.Println("ERROR: Failed to load ph subsystem. Error:", err)
 		r.LogError("subsystem-ph", "Failed to load ph subsystem. Error:"+err.Error())
+	}
+	if err := r.loadAutoTesterSubsystem(); err != nil {
+		log.Println("ERROR: Failed to load autotester:", err)
+		r.LogError("subsystem-autotester", err.Error())
 	}
 	if err := r.loadMacroSubsystem(); err != nil {
 		log.Println("ERROR: Failed to load macro subsystem. Error:", err)
