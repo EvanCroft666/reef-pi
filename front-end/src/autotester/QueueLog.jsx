@@ -13,12 +13,19 @@ export default function QueueLog({ tasks = [], onCancel }) {
     <ul className="space-y-1">
       {tasks.map(task => {
         const name = task.param.toUpperCase()
-        const isCal = task.code >= 0x21
-        const label = isCal
-          ? (task.param === 'pump'
-              ? 'Pump Calibration'
-              : `${name} Calibration`)
-          : `${name} Test`
+        let label
+        if (task.param.startsWith('flush_')) {
+          // Flush tasks show as “Flush”
+          const real = task.param.replace('flush_', '').toUpperCase()
+          label = `${real} Flush`
+        } else if (task.param === 'pump') {
+          label = 'Pump Calibration'
+        } else if (task.code >= 0x22) {
+          // codes 0x22–0x26 are parameter calibrations
+          label = `${name} Calibration`
+        } else {
+          label = `${name} Test`
+        }
 
         return (
           <li

@@ -32,8 +32,7 @@ const routes = [
   <Route key="temperature" path="/temperature" element={<Temperature />} label={i18n.t('capabilities:temperature')} />,
   <Route key="ato" path="/ato" element={<Ato />} label={i18n.t('capabilities:ato')} />,
   <Route key="ph" path="/ph" element={<Ph />} label={i18n.t('capabilities:ph')} />,
-  <Route key="autotester" path="/autotester" element={<AutoTester />} label={i18n.t('capabilities:autotester')}
-/>,
+  <Route key="autotester" path="/autotester" element={<AutoTester />} label={i18n.t('capabilities:autotester')} />, // added
   <Route key="doser" path="/doser" element={<Doser />} label={i18n.t('capabilities:dosing_pumps')} />,
   <Route key="macro" path="/macro" element={<Macro />} label={i18n.t('capabilities:macros')} />,
   <Route key="camera" path="/camera" element={<Camera />} label={i18n.t('capabilities:camera')} />,
@@ -41,7 +40,6 @@ const routes = [
   <Route key="journal" path="/journal" element={<Journal />} label={i18n.t('capabilities:journal')} />,
   <Route key="configuration" path="/configuration/*" element={<Configuration />} label={i18n.t('capabilities:configuration')} />,
 ]
-
 
 function CurrentPageHeader() {
   const location = useLocation()
@@ -66,10 +64,8 @@ class mainPanel extends React.Component {
     const panels = []
     for (const route of routes) {
       const cap = route.key
-      if (currentCaps[cap] === undefined) {
-        continue
-      }
-      if (!currentCaps[cap]) {
+      // Only skip tabs if capability is explicitly set to false
+      if (currentCaps[cap] === false) {
         continue
       }
       const label = route.props.label
